@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com">
+
+<head>
+
+</head>
+
+<body>
+	<div id="main" class='layout-navbar'>
+		<div id="main-content">
+
+			<div class="page-heading">
+				<div class="page-title mb-5">
+					<div class="row">
+						<div class="col-12 col-md-6 order-md-1 order-last">
+							<h3>Table 1</h3>
+							<!-- <p class="text-subtitle text-muted">Navbar will appear in top of the page.</p> -->
+						</div>
+						<div class="col-12 col-md-6 order-md-2 order-first">
+							<nav aria-label="breadcrumb"
+								class="breadcrumb-header float-start float-lg-end">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a
+										href="${pageContext.request.contextPath}">Dashboard</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Item
+										Groups</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+				</div>
+				<section class="section blnk-db ">
+					<div class="card">
+						<div class="card-body">
+							<form th:action="@{/pivot}" method="get" class="border p-3 m-3">
+								<div class="row">
+									<div class="form-group col-md-3">
+										<select class="form-control" id="year" name="year">
+											<option value="">Select Year</option>
+											<option value="2023">2023</option>
+											<option value="2024">2024</option>
+											<option value="2025">2025</option>
+											<option value="2026">2026</option>
+											<option value="2027">2027</option>
+											<option value="2028">2028</option>
+											<option value="2029">2029</option>
+											<option value="2030">2030</option>
+
+
+										</select>
+									</div>
+									<div class="form-group col-md-3">
+										<select class="form-control" id="role" name="role">
+											<option value="">All</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+
+										</select>
+									</div>
+
+									<div class="form-group col-md-3">
+										<button type="submit" class="btn btn-secondary">Enter
+										</button>
+									</div>
+
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-body  ">
+							<div
+								class="inv-data-tble table-responsive table-scroll-c fix-scroll-t">
+								<!-- Table for each role -->
+								<div th:each="role, idx : ${groupedData}">
+									<h1 th:text="${role.key}"></h1>
+									<table
+										class="table table-striped dataTable dataTables_wrapper hover cell-border table-bordered "
+										id="table-p">
+										<thead>
+											<tr>
+												<th rowspan="6">emp_id</th>
+												<th rowspan="6">first_name</th>
+												<th rowspan="6">last_name</th>
+												<th rowspan="6">employee id</th>
+												<th rowspan="6">Year</th>
+												<th rowspan="6">Role</th>
+												<th colspan="6">Business Results Detail</th>
+												<th colspan="10">Behavioral Results Detail</th>
+
+											</tr>
+											<tr>
+												<th>connect_to_plan</th>
+												<th>conversion_to_plan</th>
+												<th>iat_to_plan</th>
+												<th>relate_to_plan</th>
+												<th>salesToPlan</th>
+												<th>Bs Total</th>
+												<th th:each="name : ${#sets.toSet(role.value.![name])}">[[${name}]]</th>
+												<th>Bh Total</th>
+												<th>Total</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="emp : ${#sets.toSet(role.value.![empId])}">
+												<td th:text="${emp}"></td>
+												<!-- <td><span
+															th:text="${role.value.![firstName][role.value.![empId].indexOf(emp)]}"></span></td>
+														<td><span
+															th:text="${role.value.![lastName][role.value.![empId].indexOf(emp)]}"></span></td> -->
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.firstName}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.lastName}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.employeeID}"></span></td>
+												<td><span
+													th:text="${role.value.![year][role.value.![empId].indexOf(emp)]}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.role}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.connectToPlan}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}"
+													th:text="${bus.conversionToPlan}"></span></td>
+
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.iatToPlan}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.relateToPlan}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.salesToPlan}"></span></td>
+												<td><span th:each="bus : ${buisnessResultList}"
+													th:if="${bus.empId == emp}" th:text="${bus.total}"></span></td>
+												<!-- <td><span th:each="bus : ${buisnessResultList}"
+															th:if="${bus.empId == emp}" th:text="${bus.year}"></span></td> -->
+
+
+												<td th:each="name : ${#sets.toSet(role.value.![name])}">
+													<span
+													th:text="${sumOfResult[emp + '_' + name + '_' + role.key] ?: 0}"></span>
+												</td>
+												<td><span th:each="rev : ${reviewResultsTotalList}"
+													th:if="${rev.empId == emp}" th:text="${rev.bhTotal}"></span></td>
+												<td><span th:each="rev : ${reviewResultsTotalList}"
+													th:if="${rev.empId == emp}" th:text="${rev.bhTotal + rev.bsTotal}"></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</section>
+			</div>
+
+			<footer>
+				<div class="footer clearfix mb-0 text-muted c-ftr">
+					<div class="float-start">
+						<p>2021 &copy; Banners Hallmark</p>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="/Bannershallmark/resources/assets/js/main.js"></script>
+
+
+</body>
+
+</html>
